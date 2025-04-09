@@ -21,7 +21,7 @@ async function connectDB() {
     db = client.db("focusnest"); // Store the database instance
     console.log("✅ MongoDB Connected");
   } catch (err) {
-    console.error("❌ MongoDB Connection Error:", err);
+    console.error("❌ MongoDB Connection Error:", err.message);
   } finally {
     //
   }

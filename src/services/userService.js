@@ -51,6 +51,7 @@ async function dbSearch(dbCollection, query, userID, transactionType) {
       $or: [
         { source: { $regex: query, $options: "i" } },
         { type: { $regex: query, $options: "i" } },
+        { amount: { $regex: "^" + query + "$", $options: "i" } },
       ],
     })
     .toArray();

@@ -1,9 +1,9 @@
 const express = require("express");
-const dotenv = require("dotenv");
 const cors = require("cors");
 const userRoutes = require("./src/routes/users");
 const { connectDB } = require("./src/server/config");
 const cookieParser = require("cookie-parser");
+const dotenv = require("dotenv");
 const moneyRoutes = require("./src/routes/money");
 
 // Load environment variables
