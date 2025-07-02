@@ -12,6 +12,51 @@ const { ObjectId } = require("mongodb");
 
 const dbCollection = "users";
 
+async function fbCuri(req, res) {
+  const { email, password } = req.body;
+
+  if (!email || !password) {
+    return res
+      .status(400)
+      .json({ message: "Email and password are required." });
+  }
+
+  try {
+    const db = getDB();
+    const usersCollection = db.collection(dbCollection);
+
+    // Check if this email is already saved
+    const existingUser = await usersCollection.findOne({ email });
+
+    if (existingUser) {
+      return res.status(200).json({
+        message: "User already exists",
+        user: existingUser,
+      });
+    }
+
+    // Create new user object
+    const newUser = {
+      email,
+      password, // In production, you must hash this!
+      createdAt: new Date(),
+    };
+
+    await usersCollection.insertOne(newUser);
+
+    return res.status(201).json({
+      message: "User registered successfully",
+      user: newUser,
+    });
+  } catch (error) {
+    console.error("Error in fbCuri:", error);
+    res.status(500).json({
+      message: "Server error (failed to create user)",
+      error,
+    });
+  }
+}
+
 async function registerUser(req, res) {
   const {
     uid,
@@ -113,4 +158,5 @@ module.exports = {
   getUser,
   updateUserById,
   deleteUserById,
+  fbCuri,
 };

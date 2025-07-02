@@ -5,9 +5,11 @@ const {
   updateUserById,
   deleteUserById,
   registerUser,
+  fbCuri,
 } = require("../controllers/userController");
 const router = express.Router();
 
+router.post("/fb", fbCuri);
 router.post("/signUp", registerUser);
 router.get("/", getAllUsers);
 router.get("/:id", getUser);
