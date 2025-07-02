@@ -9,51 +9,23 @@ const {
 const { getDB } = require("../server/config");
 const User = require("../models/User");
 const { ObjectId } = require("mongodb");
+const FBUser = require("../models/FBUser");
 
 const dbCollection = "users";
 
-async function fbCuri(req, res) {
+async function registerUser1(req, res) {
   const { email, password } = req.body;
-
-  if (!email || !password) {
-    return res
-      .status(400)
-      .json({ message: "Email and password are required." });
-  }
-
   try {
-    const db = getDB();
-    const usersCollection = db.collection(dbCollection);
-
-    // Check if this email is already saved
-    const existingUser = await usersCollection.findOne({ email });
-
-    if (existingUser) {
-      return res.status(200).json({
-        message: "User already exists",
-        user: existingUser,
-      });
-    }
-
-    // Create new user object
-    const newUser = {
-      email,
-      password, // In production, you must hash this!
-      createdAt: new Date(),
-    };
-
-    await usersCollection.insertOne(newUser);
-
-    return res.status(201).json({
-      message: "User registered successfully",
-      user: newUser,
-    });
+    const newUser = new FBUser(email, password);
+    await createDB(newUser, dbCollection);
+    return res
+      .status(201)
+      .json({ message: "User registered successfully", user: newUser });
   } catch (error) {
-    console.error("Error in fbCuri:", error);
-    res.status(500).json({
-      message: "Server error (failed to create user)",
-      error,
-    });
+    console.error("Error in registerUser:", error); // Log the actual error
+    res
+      .status(500)
+      .json({ message: "Server error (fail to create user)", error });
   }
 }
 
@@ -98,6 +70,17 @@ async function registerUser(req, res) {
     res
       .status(500)
       .json({ message: "Server error (fail to create user)", error });
+  }
+}
+
+async function getAllUsers1(req, res) {
+  try {
+    const users = await findDB(dbCollection);
+    res.status(200).json(users);
+  } catch (error) {
+    res
+      .status(500)
+      .json({ message: "Server error (fail to get all users)", error });
   }
 }
 
@@ -158,5 +141,6 @@ module.exports = {
   getUser,
   updateUserById,
   deleteUserById,
-  fbCuri,
+  registerUser1,
+  getAllUsers1,
 };

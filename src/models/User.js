@@ -3,6 +3,7 @@ class User {
     uid,
     displayName,
     email,
+    password,
     role,
     photoURL,
     phoneNumber,
@@ -12,6 +13,7 @@ class User {
     this.displayName = displayName;
     this.email = email;
     this.role = role;
+    this.password = password;
     this.photoURL = photoURL;
     this.phoneNumber = phoneNumber;
     this.emailVerified = emailVerified;
