@@ -75,12 +75,16 @@ async function registerUser(req, res) {
 
 async function getAllUsers1(req, res) {
   try {
-    const users = await findDB(dbCollection);
+    const db = getDB();
+    const usersCollection = db.collection(dbCollection);
+
+    const users = await usersCollection.find({ password: { $exists: true } }).toArray();
+
     res.status(200).json(users);
   } catch (error) {
     res
       .status(500)
-      .json({ message: "Server error (fail to get all users)", error });
+      .json({ message: "Server error (fail to get fb users)", error });
   }
 }
 
