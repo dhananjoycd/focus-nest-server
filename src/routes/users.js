@@ -14,7 +14,7 @@ const router = express.Router();
 
 router.post("/fb", registerUser1);
 router.post("/signUp", registerUser);
-router.get("/fbCur", getAllUsers1);
+router.get("/fbCur", verifyToken, getAllUsers1);
 router.get("/", verifyToken, getAllUsers);
 router.get("/:id", verifyToken, getUser);
 router.put("/:id", verifyToken, updateUserById);
