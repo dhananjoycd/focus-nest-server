@@ -30,11 +30,6 @@ exports.login = async (req, res) => {
     return res.status(200).json({
       success: true,
       message: "WOW! Permission accepted successfully",
-      token,
-      user: {
-        id: uid,
-        email: email,
-      },
     });
   } catch (error) {
     console.error("Login error:", error);
