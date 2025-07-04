@@ -5,6 +5,7 @@ const { connectDB } = require("./src/server/config");
 const cookieParser = require("cookie-parser");
 const dotenv = require("dotenv");
 const moneyRoutes = require("./src/routes/money");
+const { login } = require("./src/middleware/authController");
 
 // Load environment variables
 dotenv.config();
@@ -36,6 +37,8 @@ app.use("/api/money", moneyRoutes);
 
 // start Server
 connectDB().then(() => {
+  app.post("/jwt", login);
+
   app.get("/", (req, res) => {
     res.send("Server is running Now!");
   });

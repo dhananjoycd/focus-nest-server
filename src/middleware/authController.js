@@ -1,34 +1,39 @@
 const jwt = require("jsonwebtoken");
-const { findOneDB } = require("../services/userService");
 
 exports.login = async (req, res) => {
   try {
-    const user = await findOneDB("users", req.params.id);
-    if (!user) {
+    const { uid, email } = req.body;
+    if (!uid || !email) {
       return res
         .status(401)
         .json({ success: false, message: "Invalid credentials" });
     }
 
     const token = jwt.sign(
-      { id: user._id, email: user.email },
+      {
+        uid,
+        email,
+      },
       process.env.ACCESS_TOKEN_SECRET,
-      { expiresIn: "7d" }
+      {
+        expiresIn: "7d",
+      }
     );
 
-    res.cookie("token", token, {
+    res.cookie("jwt_token", token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
-      maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days
+      sameSite: "strict",
+      maxAge: 7 * 24 * 60 * 60 * 1000, // example: 7 days
     });
 
     return res.status(200).json({
       success: true,
-      message: "Permission accepted successfully",
+      message: "WOW! Permission accepted successfully",
+      token,
       user: {
-        id: user._id,
-        email: user.email,
+        id: uid,
+        email: email,
       },
     });
   } catch (error) {
