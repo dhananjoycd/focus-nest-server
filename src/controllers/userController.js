@@ -78,13 +78,9 @@ async function getAllUsers1(req, res) {
     const db = getDB();
     const usersCollection = db.collection(dbCollection);
 
-<<<<<<< HEAD
     const users = await usersCollection
       .find({ password: { $exists: true } })
       .toArray();
-=======
-    const users = await usersCollection.find({ password: { $exists: true } }).toArray();
->>>>>>> 2ea567d858c4009f842f45665fd8f9513a0b2c98
 
     res.status(200).json(users);
   } catch (error) {
