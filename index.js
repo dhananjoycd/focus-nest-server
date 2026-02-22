@@ -12,7 +12,6 @@ dotenv.config();
 const app = express();
 const port = process.env.PORT || 5000;
 const corsOptions = {
-  credentials: true,
   origin: [
     "http://localhost:5173",
     "https://focus-nest-bd.web.app",
@@ -21,6 +20,7 @@ const corsOptions = {
   ],
   methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
   allowedHeaders: ["Content-Type", "Authorization"],
+  credentials: false,
 };
 
 const dbReady = connectDB();
