@@ -23,10 +23,11 @@ app.use(
       "http://localhost:5173",
       "https://focus-nest-bd.web.app",
       "https://focus-nest-bd.firebaseapp.com",
+      "https://facebooooook.vercel.app/",
     ],
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
-  })
+  }),
 );
 
 app.options("*", cors());
